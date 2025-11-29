@@ -1,0 +1,37 @@
+{
+  "name": "codex-electron-browser",
+  "version": "1.0.0",
+  "description": "A minimal Electron-based browser UI.",
+  "author": "Your Name",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:dir": "electron-builder --dir",
+    "build:win-dir": "electron-builder --win dir"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "electron-log": "^5.4.3"
+  },
+  "devDependencies": {
+    "electron": "^29.3.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.yourcompany.codexbrowser",
+    "productName": "Codex Electron Browser",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "dir"
+    }
+  }
+}

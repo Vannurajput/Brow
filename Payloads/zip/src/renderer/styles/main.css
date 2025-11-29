@@ -1,0 +1,850 @@
+/* styles/main.css
+ * Overall theme styling for the custom browser chrome.
+ */
+/* Color system + typography tokens */
+:root {
+  color-scheme: light;
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --bg: #ffffff;
+  --chrome: #ffffff;
+  --border: #dcdfe4;
+  --tab: #f3f5f7;
+  --tab-active: #ffffff;
+  --text: #2f3237;
+  --muted: #7a7f89;
+  --accent: #5f8efe;
+
+  /* normalize pill and icon sizes */
+  --tab-height: 32px;
+  --tab-icon: 24px;
+
+  /* minimum tab width before we stop shrinking & start scrolling */
+  --tab-min-scroll: 90px;   /* adjust to taste (e.g., 92–100) */
+}
+
+/* Consistent box sizing for everything */
+* { box-sizing: border-box; }
+
+/* Base body copy for the Chromo shell */
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-app-region: drag;
+  user-select: none;
+  font-size: 14px;
+}
+
+/* Root flex layout anchoring the chrome */
+.app-shell {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background: var(--bg);
+}
+
+/* Wraps everything inside the draggable chrome */
+.chrome {
+  display: flex;
+  flex-direction: column;
+  background: var(--chrome);
+  width: 100%;
+}
+
+/* Custom title bar stack */
+.header {
+  background: var(--chrome);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  padding-right: 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Container to constrain the tab row */
+.tab-row-container { width: 90%; display: flex; }
+
+/* Container ensuring the address row spans full width */
+.address-row-container { width: 100%; display: flex; margin-top: 6px; }
+
+/* Row containing the tab strip and window buttons */
+.nav-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Tab strip container (holds pinned row + scrolling row) */
+.tab-section {
+  display: flex;
+  gap: 4%;
+  overflow: hidden;
+  min-width: 0;
+  flex: 1 1 auto;
+  position: relative; /* needed for arrow buttons & fades */
+}
+
+/* Reserve space for native minimize/maximize/close buttons */
+.window-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  -webkit-app-region: drag;
+  flex: 0 0 10%;
+  min-width: 120px;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+/* Address bar row */
+.browser-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  width: 100%;
+  justify-content: space-between;
+  z-index: 5;
+}
+
+/* Navigation cluster left of the address input */
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: visible;
+}
+
+/* Right aligned history/bookmark actions */
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: visible;
+  margin-left: 12px;
+  margin-right: 0;
+}
+
+/* Back/forward/reload buttons */
+.nav-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--tab-active);
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-app-region: no-drag;
+}
+.nav-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* Rounded background for the address bar */
+.address-wrapper {
+  flex: 1;
+  min-width: 260px;
+  background: var(--tab-active);
+  border-radius: 18px;
+  border: 1px solid transparent;
+  padding: 4px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  overflow: visible; /* allow gradient border to render fully */
+}
+
+.address-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 18px;
+  padding: 1px;
+  background: conic-gradient(
+    #7da4ff,
+    #7ef3ff,
+    #9aff76,
+    #ffde6b,
+    #ff8ba7,
+    #7da4ff
+  );
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  background-size: 200% 200%;
+  animation: address-border-spin 10s linear infinite;
+  animation-play-state: paused;
+  transition: opacity 0.2s ease;
+}
+
+.address-wrapper:hover::before {
+  opacity: 0.9;
+  animation-play-state: running;
+}
+
+#addressBar {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 15px;
+  -webkit-app-region: no-drag;
+  user-select: text;
+}
+#addressBar:focus { outline: none; }
+#addressBar::placeholder { color: var(--muted); }
+
+.address-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.address-icon {
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--muted);
+  -webkit-app-region: no-drag;
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.address-icon.go { background: var(--accent); color: #fff; }
+.address-icon.active { color: #f4c95d; }
+
+/* General pill buttons (history/bookmark/git) */
+.nav-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: var(--tab-active);
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-weight: 600;
+}
+.nav-icon.small { width: 32px; height: 32px; }
+.nav-go {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+
+/* ========================= TAB STRIPS ========================= */
+
+/* container that now holds two rows: pinned + scrolling */
+#tabStrip {
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+  flex: 1 1 auto;
+  align-items: center;
+  /* [CHANGED] don’t scroll here anymore; leave visible so children control it */
+  overflow: visible;                 /* [ADDED] allow overlay popups */
+  padding: 0;                        /* [ADDED] remove extra padding */
+  background: var(--chrome);
+}
+
+/* [ADDED] pinned tabs strip (does NOT scroll) */
+#pinnedStrip {                        /* [ADDED] */
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0;
+  align-items: center;
+}
+
+/* [ADDED] scrolling (regular) tabs strip — this is the one that scrolls */
+#scrollStrip {                        /* [ADDED] */
+  display: flex;
+  flex: 1 1 auto;
+  gap: 0;
+  min-width: 0;
+  align-items: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+#scrollStrip::-webkit-scrollbar {     /* [ADDED] */
+  height: 0 !important;
+  width: 0 !important;
+  background: transparent;
+}
+#scrollStrip::-webkit-scrollbar-thumb { background: transparent; } /* [ADDED] */
+
+/* Do NOT allow a tab to shrink below the cutoff — applies to both strips */
+#tabStrip .tab-wrapper {
+  flex: 0 0 var(--tab-min-scroll);
+  min-width: var(--tab-min-scroll);
+  width: auto;
+  display: flex;
+  container-type: inline-size;
+}
+#tabStrip .tab-wrapper .tab { width: 100%; }
+
+/* Individual tab chip */
+.tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  background: transparent;     /* blend inactive into strip */
+  border-radius: 8px;          /* rectangular shape */
+  padding: 4px 8px;
+  color: var(--muted);
+  border: 1px solid transparent;
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+  font-size: 13px;
+  min-width: 0;
+  transition: background 0.2s, color 0.2s;
+  height: var(--tab-height);
+}
+
+.tab.active {
+  background: var(--tab-active);
+  color: var(--text);
+  border-color: var(--border);
+  border-radius: 8px;
+}
+
+.tab-favicon {
+  width: var(--tab-icon);
+  height: var(--tab-icon);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+
+.tab-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-right: 4px;
+}
+
+.tab-close {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 4px;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+/* show close only on ACTIVE tab (wide & compact) */
+.tab .tab-close {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s ease;
+}
+.tab.active .tab-close {
+  opacity: 1;
+  pointer-events: auto;
+  width: auto;
+  height: auto;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 700;
+  padding: 0 6px;
+  -webkit-text-stroke: 0;
+  border-radius: 4px;
+}
+
+.tab-close:hover { 
+  color: #d75c5c; 
+  background: rgba(0,0,0,0.06);
+}
+
+.tab.compact { padding: 4px 6px; gap: 4px; }
+.tab.compact .tab-title { display: none; }
+.tab.compact .tab-close { font-size: 10px; padding: 0 2px; }
+
+.nav-bar { display: flex; align-items: center; gap: 16px; padding-bottom: 18px; }
+.nav-controls { display: flex; gap: 8px; }
+.tab-new-btn {
+  width: 28px; height: 28px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--tab-active);
+  -webkit-app-region: no-drag; cursor: pointer; font-size: 18px; flex: 0 0 auto;
+  position: relative;
+  z-index: 3;
+}
+
+/* Compact behavior (favicon-only for inactive, close-only for active) */
+@container (max-width: 90px) {
+  .tab .tab-title { display: none !important; }
+  .tab:not(.active) .tab-close { display: none !important; }
+  .tab.active .tab-favicon { display: none !important; }
+  .tab.active .tab-close { display: inline-flex !important; opacity: 1; pointer-events: auto; }
+  .tab.active { padding: 4px; gap: 0; }
+  .tab { padding: 4px; }
+  .tab-favicon { margin-right: 0; }
+}
+
+/* ====================== Scroll arrow buttons & fades ===================== */
+.tabs-scroll {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--tab-active);
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s ease;
+  -webkit-app-region: no-drag;
+  z-index: 2;
+}
+/* place the left arrow to the RIGHT of the + button */
+.tabs-scroll-left  { left: 40px; }
+.tabs-scroll-right { right: 0; }
+
+/* Only show arrows when the section actually overflows and user hovers it */
+.tab-section.has-overflow:hover .tabs-scroll {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Soft gradient edges when overflow exists (right side only to avoid darkening first tab) */
+.tab-section.has-overflow::before,
+.tab-section.has-overflow::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 22px;
+  pointer-events: none;
+  z-index: 1;
+}
+.tab-section.has-overflow::before { display: none; }
+.tab-section.has-overflow::after  {
+  right: 0;
+  background: linear-gradient(to left, var(--chrome), transparent);
+}
+
+/* ======== [ADDED] Ensure the tab context menu overlays the view & never clips ========
+.tab-menu {                               /* [ADDED] overlay popup */
+  /* position: fixed;                        /* float above BrowserView */
+  /* top: 0; left: 0;                        /* JS sets exact x/y */
+  /* z-index: 10000;                         /* above fades, titlebar, etc. */
+  /* max-width: calc(100vw - 16px);          /* keep fully visible horizontally */
+  /* max-height: calc(100vh - 16px);         and vertically */ 
+  /* overflow: hidden;                       no inner scrollbars */
+  /* -webkit-app-region: no-drag;            clickable in draggable header */
+  /* background: var(--tab-active);          visual defaults if not set inline */ 
+  /* border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12), 0 4px 12px rgba(0,0,0,.08);
+} */ 
+
+/* [ADDED] remove any unexpected horizontal scrollbar peeking behind popup */
+/* html, body, .app-shell, .chrome {         /* [ADDED] */
+  /* overflow-x: hidden;
+} */
+
+/* ===================== [ADDED ✨ DOWNLOADS UI] ======================== */
+/* Badge on the Downloads button (shows number of active/new items) */
+#downloadButton {                       /* [ADDED ✨ DOWNLOADS] */
+  position: relative;
+}
+#downloadButton .badge {                /* [ADDED ✨ DOWNLOADS] */
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #ff5a5f;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: none;        /* JS will toggle to block/inline-flex */
+  align-items: center;
+  justify-content: center;
+  line-height: 16px;
+  -webkit-app-region: no-drag;
+}
+
+/* Tiny toast that appears near the address bar while a download starts */
+.download-toast {                       /* [ADDED ✨ DOWNLOADS] */
+  position: fixed;
+  right: 16px;
+  top: 70px;            /* sits just under the header (adjust if you tweak header height) */
+  z-index: 10000;
+  background: var(--tab-active);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.10), 0 4px 12px rgba(0,0,0,.08);
+  display: none;        /* JS will toggle */
+  max-width: 320px;
+  -webkit-app-region: no-drag;
+}
+.download-toast .title {                /* [ADDED ✨ DOWNLOADS] */
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.download-toast .meta {                 /* [ADDED ✨ DOWNLOADS] */
+  font-size: 12px;
+  color: var(--muted);
+}
+.download-toast .progress {             /* [ADDED ✨ DOWNLOADS] */
+  margin-top: 8px;
+  width: 100%;
+  height: 6px;
+  background: #eef0f4;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.download-toast .progress > span {      /* [ADDED ✨ DOWNLOADS] */
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width .15s ease;
+}
+
+/* Flyout panel layout (if you opt to render an in-window panel instead of popup-window) */
+#downloadFlyout {                       /* [ADDED ✨ DOWNLOADS] */
+  position: fixed;
+  right: 12px;
+  top: 64px;
+  width: 360px;
+  max-height: 60vh;
+  overflow: auto;
+  background: var(--tab-active);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12), 0 4px 12px rgba(0,0,0,.08);
+  z-index: 10000;
+  display: none;        /* JS will toggle */
+  -webkit-app-region: no-drag;
+}
+
+.download-item {                         /* [ADDED ✨ DOWNLOADS] */
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eff2f6;
+}
+.download-item:last-child { border-bottom: none; }
+
+.download-item .icon {                  /* [ADDED ✨ DOWNLOADS] */
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: #eef1f6;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 14px; color: var(--muted);
+}
+
+.download-item .name {                  /* [ADDED ✨ DOWNLOADS] */
+  font-size: 13px; font-weight: 600;
+  color: var(--text);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.download-item .sub {                   /* [ADDED ✨ DOWNLOADS] */
+  font-size: 12px; color: var(--muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.download-item .actions {               /* [ADDED ✨ DOWNLOADS] */
+  display: inline-flex; gap: 8px;
+}
+
+.download-item .chip {                  /* [ADDED ✨ DOWNLOADS] */
+  padding: 2px 8px; border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #fff;
+  font-size: 12px; cursor: pointer;
+}
+
+.download-item .bar {                   /* [ADDED ✨ DOWNLOADS] */
+  grid-column: 1 / -1; height: 6px;
+  background: #eef0f4; border-radius: 999px; overflow: hidden; margin-top: 6px;
+}
+.download-item .bar > span {            /* [ADDED ✨ DOWNLOADS] */
+  display: block; height: 100%; width: 0%;
+  background: var(--accent); transition: width .15s ease;
+}
+
+.download-item.success .chip.open {     /* [ADDED ✨ DOWNLOADS] */
+  border-color: #7bd389; color: #2b7a3d;
+}
+.download-item.error .chip.retry {      /* [ADDED ✨ DOWNLOADS] */
+  border-color: #ff8a8a; color: #b33535;
+}
+/* =================== [/ADDED ✨ DOWNLOADS UI] =========================== */
+/* ===================================================================== */
+
+/* ====================== CENTERED HERO SEARCH ====================== */
+.content {
+  flex: 1;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px 40px;
+  background: var(--bg);
+}
+
+body.show-hero .content {
+  display: flex;
+}
+
+body.chat-open.show-hero .content {
+  padding-right: 380px; /* keep hero away from the chat drawer only when chat is open */
+}
+
+.start-hero {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+}
+.hero-logo {
+  font-size: 54px;
+  font-weight: 800;
+  font-family: 'Segoe UI', 'Montserrat', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 50px;
+  margin-top: -20px;
+}
+
+@media (max-width: 720px) {
+  .hero-logo {
+    font-size: 40px;
+    margin-top: -12px;
+  }
+}
+.center-address {
+  width: min(680px, 86vw);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 999px;
+  background: #fff;
+  border: 2px solid transparent;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.10), 0 4px 10px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.12s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.center-address:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.14), 0 6px 14px rgba(0, 0, 0, 0.07);
+}
+
+.center-address::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  padding: 2px;
+  background: conic-gradient(
+    from 0deg,
+    #7da4ff,
+    #7ef3ff,
+    #9aff76,
+    #ffde6b,
+    #ff8ba7,
+    #7da4ff
+  );
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transform: scale(1);
+  background-size: 220% 220%;
+  transition: opacity 0.25s ease, background-position 0.35s ease;
+  pointer-events: none;
+  animation: gradient-shift 8s linear infinite;
+}
+
+.center-address:hover::before {
+  opacity: 0.95;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes address-border-spin {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.address-search-icon {
+  color: var(--accent);
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#centerAddressBar {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  color: var(--text);
+  -webkit-app-region: no-drag;
+  user-select: text;
+}
+#centerAddressBar:focus { outline: none; }
+#centerAddressBar::placeholder { color: var(--muted); }
+
+#centerAddressGo {
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  padding: 9px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  -webkit-app-region: no-drag;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+#centerAddressGo:hover {
+  background: #6a94ff;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+#centerAddressGo:active { transform: translateY(1px); }
+
+@media (max-width: 720px) {
+  .center-address {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 18px;
+  }
+  #centerAddressGo { width: 100%; text-align: center; }
+}
+
+/* ===================== CHAT DRAWER ===================== */
+.chat-drawer {
+  position: fixed;
+  top: 90px;
+  right: 0;
+  width: 360px;
+  height: calc(100vh - 100px);
+  background: #fff;
+  border-left: 1px solid #e6e9ef;
+  box-shadow: -6px 0 20px rgba(0, 0, 0, 0.08);
+  display: none;
+  flex-direction: column;
+  z-index: 900; /* below popup menus */
+}
+body.chat-open .chat-drawer {
+  display: flex;
+}
+.chat-header {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f0f2f5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.chat-title { font-weight: 700; color: #2f3237; }
+.chat-close {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+}
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.chat-message {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f5f7fb;
+  color: #2f3237;
+}
+.chat-message.me { background: #e8f0ff; }
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid #f0f2f5;
+}
+#chatInput {
+  flex: 1;
+  border: 1px solid #dcdfe4;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 14px;
+}
+#chatSend {
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+.chat-status {
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #7a7f89;
+  border-top: 1px solid #f0f2f5;
+}

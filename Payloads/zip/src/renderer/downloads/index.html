@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!-- Downloads popup window -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Downloads</title>
+    <meta http-equiv="Content-Security-Policy"
+      content="default-src 'self' file:;
+               img-src 'self' data: file:;
+               style-src 'self' 'unsafe-inline' file:;
+               script-src 'self' file:;" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="dl-shell" role="dialog" aria-labelledby="dlTitle">
+      <!-- Header (title only, no button) -->
+      <header class="dl-header">
+        <h3 id="dlTitle" class="dl-title">Recent download history</h3>
+      </header>
+
+      <!-- List -->
+      <main id="downloadList" class="dl-list" aria-live="polite">
+        <!-- items are rendered by app.js -->
+      </main>
+    </div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

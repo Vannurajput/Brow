@@ -1,0 +1,162 @@
+/* Styling for GitHub popup */
+:root {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: #1f232c;
+  background: transparent;
+}
+
+body {
+  margin: 0;
+  background: transparent;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* Card container that floats over the browser */
+.window-shell {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 18px rgba(15, 17, 26, 0.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-width: 360px;
+  max-height: 420px;
+}
+
+/* Top row containing tabs + close button */
+.window-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px 4px;
+}
+
+/* Tab selector for Config/Push/Pull */
+.tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.tab {
+  border: none;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #0a84ff;
+  color: #fff;
+}
+
+.close-btn {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Scrollable content panels */
+.panel {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 18px 18px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.panel.active {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.panel::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 999px;
+}
+
+/* Form label wrappers */
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  gap: 6px;
+}
+
+/* Utility row layout for inline controls */
+.row {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Inputs share the same rounded styling */
+input {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  flex: 1;
+}
+
+textarea {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  min-height: 100px;
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #0a84ff;
+}
+
+/* Buttons default to gray pill */
+button {
+  border-radius: 8px;
+  border: none;
+  background: rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+button.primary {
+  background: #0a84ff;
+  color: #fff;
+}
+
+button.ghost {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.status {
+  font-size: 12px;
+  color: #4a4d57;
+}
+
+.note {
+  font-size: 12px;
+  color: #6a6d78;
+  margin: 0;
+}

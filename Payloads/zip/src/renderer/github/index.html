@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!-- GitHub configuration / sync popup -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline';" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Sync</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="window-shell">
+      <header class="window-header">
+        <div class="tabs">
+          <button id="tabConfig" class="tab active">Config</button>
+          <button id="tabPush" class="tab">Push</button>
+          <button id="tabPull" class="tab">Pull</button>
+        </div>
+        <button id="closeButton" class="close-btn" aria-label="Close">×</button>
+      </header>
+      <section id="configPanel" class="panel active">
+        <label>
+          Personal Access Token (PAT)
+          <input id="patInput" type="password" autocomplete="off" />
+        </label>
+        <label>
+          Owner
+          <input id="ownerInput" type="text" />
+        </label>
+        <label>
+          Repository
+          <input id="repoInput" type="text" />
+        </label>
+        <label>
+          Branch
+          <input id="branchInput" type="text" />
+        </label>
+        <label>
+          Default Path (in repository)
+          <input id="pathInput" type="text" />
+        </label>
+        <label>
+          Default Commit Message
+          <input id="commitMessageInput" type="text" />
+        </label>
+        <p class="note">Push uploads the inline text you enter below directly to the configured path.</p>
+        <div class="actions">
+          <button id="saveConfigButton">Save &amp; Connect</button>
+          <button id="signOutButton" class="ghost">Sign out</button>
+        </div>
+        <p id="configStatus" class="status">Not connected</p>
+      </section>
+      <section id="pushPanel" class="panel">
+        <label>
+          Commit Message
+          <input id="pushCommitMessage" type="text" />
+        </label>
+        <label>
+          Inline Content (optional)
+          <textarea id="pushInlineContent" rows="6" placeholder="Paste or type text to push without selecting a file"></textarea>
+        </label>
+        <label>
+          Zip Archive (optional)
+          <input id="pushZipInput" type="file" accept=".zip" />
+        </label>
+        <button id="pushButton" class="primary">Push</button>
+        <button id="pushZipButton" class="ghost">Push Zip</button>
+        <p id="pushStatus" class="status"></p>
+      </section>
+      <section id="pullPanel" class="panel">
+        <p>Fetch the latest version of the configured path and overwrite the local file.</p>
+        <button id="pullButton" class="primary">Pull Latest</button>
+        <p id="pullStatus" class="status"></p>
+      </section>
+    </div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

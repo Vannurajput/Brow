@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!-- index.html: Renders the renderer UI shell for the custom browser. -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https: data:; style-src 'self' 'unsafe-inline'; script-src 'self';" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Codex Browser</title>
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <div class="chrome">
+        <header class="header">
+          <div class="header-inner">
+            <!-- Tabs row with window controls -->
+            <div class="tab-row-container">
+              <div class="nav-top-row">
+                <!-- [FIX DRAG] left drag gutter so there is always draggable area -->
+                <div class="drag-spacer" aria-hidden="true"></div>
+
+                <div class="tab-section">
+                  <button id="newTabButton" class="tab-new-btn" title="New Tab">+</button>
+
+                  <!-- left scroll button (shown when .tab-section.has-overflow via CSS) -->
+                  <button id="tabsScrollLeft" class="tabs-scroll tabs-scroll-left" aria-label="Scroll tabs left"><</button>
+
+                  <div id="tabStrip" aria-label="Browser Tabs">
+                    <div class="tab-wrapper" style="flex: 0 1 190px;">
+                      <div class="tab active" draggable="true">
+                        <span class="tab-favicon">N</span>
+                        <span class="tab-title">New Tab</span>
+                        <button class="tab-close" title="Close Tab">&times;</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- right scroll button (shown when .tab-section.has-overflow via CSS) -->
+                  <button id="tabsScrollRight" class="tabs-scroll tabs-scroll-right" aria-label="Scroll tabs right">></button>
+                </div>
+
+                <!-- [FIX DRAG] right drag gutter so clicks near the corner drag the window -->
+                <div class="drag-spacer" aria-hidden="true"></div>
+              </div>
+            </div>
+
+            <!-- Navigation toolbar row -->
+            <div class="address-row-container">
+              <div class="browser-toolbar">
+                <div class="toolbar-left address-row">
+                  <!-- Git button plus navigation controls -->
+                  <button id="gitButton" class="nav-icon small" title="Git Config">Git</button>
+                  <button id="backButton" class="nav-btn" aria-label="Go Back" disabled>&larr;</button>
+                  <button id="forwardButton" class="nav-btn" aria-label="Go Forward" disabled>&rarr;</button>
+                <button id="reloadButton" class="nav-btn" aria-label="Reload">&#8635;</button>
+                <div class="address-wrapper">
+                  <span class="address-search-icon" aria-hidden="true">&#128269;</span>
+                  <!-- Address input plus inline actions -->
+                  <input id="addressBar" type="text" placeholder="Search the web or type a URL" spellcheck="false" />
+                  <div class="address-actions">
+                    <button id="bookmarkStar" class="address-icon" title="Add bookmark">&#9734;</button>
+                    <button id="addressGo" class="address-icon go" aria-label="Go">&#10140;</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="toolbar-right">
+                  <!-- Bookmark/history popups -->
+                  <button id="bookmarkListButton" class="nav-icon small" title="Bookmarks">&#9733;</button>
+                  <button id="historyButton" class="nav-icon small" title="History">&#x1F4D6;</button>
+
+                  <!-- Downloads button to open the downloads popup -->
+                  <button id="downloadButton" class="nav-icon small" title="Downloads" aria-label="Downloads">&#128229;</button>
+
+                  <button id="settingsButton" class="nav-icon small" title="Settings">&#8942;</button>
+                  <button id="chatToggle" class="nav-icon small" title="AI Chat">🤖</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="content">
+          <div class="start-hero">
+            <div class="hero-logo" aria-label="MoBrowser logo text">MoBrowser</div>
+            <form class="center-address" id="centerAddressForm">
+              <span class="address-search-icon" aria-hidden="true">&#128269;</span>
+              <input
+                id="centerAddressBar"
+                type="text"
+                placeholder="Search the web or type a URL"
+                spellcheck="false"
+                autocomplete="off"
+              />
+              <button id="centerAddressGo" type="submit" aria-label="Go">Go</button>
+            </form>
+          </div>
+        </main>
+
+        <aside id="chatDrawer" class="chat-drawer">
+          <header class="chat-header">
+            <div class="chat-title">AI Chat</div>
+            <button id="chatClose" class="chat-close" aria-label="Close chat">×</button>
+          </header>
+          <div id="chatMessages" class="chat-messages"></div>
+          <form id="chatForm" class="chat-input-row">
+            <input id="chatInput" type="text" placeholder="Ask anything..." autocomplete="off" />
+            <button id="chatSend" type="submit">Send</button>
+          </form>
+          <div id="chatStatus" class="chat-status" hidden>Thinking…</div>
+        </aside>
+
+      </div>
+    </div>
+
+    <script type="module" src="scripts/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Tab Menu</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'">
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="tm-card" role="menu" aria-label="Tab actions">
+      <button class="tm-item" data-action="pin" role="menuitem">Pin tab</button>
+      <div class="tm-sep"></div>
+      <button class="tm-item" data-action="close" role="menuitem">Close tab</button>
+      <button class="tm-item" data-action="closeOthers" role="menuitem">Close other tabs</button>
+      <button class="tm-item" data-action="closeRight" role="menuitem">Close tabs to the right</button>
+    </div>
+
+    <script src="./index.js"></script>
+  </body>
+</html>

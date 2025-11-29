@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- settings/index.html: Chrome-style Settings popup with icons -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="settings-shell">
+      <!-- header kept for close compatibility; hidden by your CSS -->
+      <header class="settings-header">
+        <button id="settingsClose" class="close-btn" aria-label="Close">&times;</button>
+      </header>
+
+      <main class="settings-content">
+        <!-- New Tab -->
+        <div id="settingsNewTab" class="settings-row" role="button" tabindex="0">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <!-- tab icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M4 6h6l2 2h8v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/>
+              <path fill="#fff" d="M11 10h2v2h2v2h-2v2h-2v-2H9v-2h2z"/>
+            </svg>
+            <div class="settings-row-title">New Tab</div>
+          </div>
+        </div>
+
+        <!-- New Window -->
+        <div id="settingsNewWindow" class="settings-row" role="button" tabindex="0">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <!-- window icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v11a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2z"/>
+              <rect x="4" y="8" width="16" height="10" fill="#fff" opacity=".15"/>
+            </svg>
+            <div class="settings-row-title">New Window</div>
+          </div>
+        </div>
+
+        <!-- Set as default browser -->
+       <!-- Set as default browser -->
+        <div id="settingsDefaultBrowser" class="settings-row" role="button" tabindex="0">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <!-- default/star icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="m12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+            </svg>
+            <div class="settings-row-title">Set as default browser</div>
+          </div>
+        </div>
+
+
+        <!-- Download -->
+        <div id="settingsDownload" class="settings-row" role="button" tabindex="0">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <!-- download icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M5 20h14v-2H5v2zm7-18-5 5h3v6h4V7h3l-5-5z"/>
+            </svg>
+            <div class="settings-row-title">Download</div>
+          </div>
+        </div>
+
+        <!-- Print -->
+        <div id="settingsPrint" class="settings-row" role="button" tabindex="0">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <!-- printer icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M6 9V3h12v6h2a2 2 0 0 1 2 2v6h-4v4H8v-4H4v-6a2 2 0 0 1 2-2h0zm2-4h8v4H8V5zm8 12H8v2h8v-2z"/>
+            </svg>
+            <div class="settings-row-title">Print</div>
+          </div>
+        </div>
+
+        <!-- Zoom -->
+        <div class="settings-row" tabindex="-1" aria-label="Zoom controls">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <!-- magnifier icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            <div class="settings-row-title" style="margin-right:auto;">Zoom</div>
+
+            <!-- zoom buttons (Chrome-like) -->
+            <button id="settingsZoomOut"  type="button"
+              style="border:1px solid #d2d6dc;border-radius:999px;padding:4px 10px;background:#fff;cursor:pointer;">−</button>
+            <button id="settingsZoomReset" type="button"
+              style="border:1px solid #d2d6dc;border-radius:999px;padding:4px 10px;background:#fff;cursor:pointer;">100%</button>
+            <button id="settingsZoomIn"   type="button"
+              style="border:1px solid #d2d6dc;border-radius:999px;padding:4px 10px;background:#fff;cursor:pointer;">+</button>
+          </div>
+        </div>
+
+        <!-- Test External Connector -->
+        <div id="settingsTestConnector" class="settings-row" role="button" tabindex="0">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <!-- plug icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M7 7h2v4h6V7h2v4h2v2h-2v2a5 5 0 0 1-5 5h-1v-2h1a3 3 0 0 0 3-3v-2H9v2H7v-2H5v-2h2V7z"/>
+            </svg>
+            <div class="settings-row-title">Test External Connector</div>
+          </div>
+        </div>
+
+        <!-- DevTools -->
+        <div id="settingsDevtools" class="settings-row" role="button" tabindex="0">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <!-- code/wrench icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="m9.4 16.6-1.8-1.2L10.6 12 7.6 8.6 9.4 7.4 13.6 12zM14 17v-2h5v2h-5z"/>
+            </svg>
+            <div class="settings-row-title">DevTools</div>
+          </div>
+        </div>
+
+        <!-- Exit -->
+        <div id="settingsExit" class="settings-row" role="button" tabindex="0">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <!-- power icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M13 3h-2v10h2V3zm4.83 2.17-1.41 1.41A7 7 0 1 1 7.58 6.6L6.17 5.17a9 9 0 1 0 11.66 0z"/>
+            </svg>
+            <div class="settings-row-title">Exit</div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="zoomControls.js"></script>
+    <script type="module" src="exitControl.js"></script>
+  </body>
+</html>

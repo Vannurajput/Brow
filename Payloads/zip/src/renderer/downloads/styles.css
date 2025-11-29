@@ -1,0 +1,127 @@
+/* downloads/styles.css – Downloads popup styled like History, no action button */
+
+/* base */
+:root{
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color:#1f1f23;
+  background:transparent;
+}
+*{ box-sizing:border-box; }
+
+/* hide outer scrollbar */
+html,body{ height:100%; overflow:hidden; }
+body{ margin:0; background:transparent; }
+html::-webkit-scrollbar, body::-webkit-scrollbar{ width:0; height:0; display:none; }
+
+/* shell */
+.dl-shell{
+  margin: 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  background:#fff;
+  border-radius:14px;
+
+  /* solid border, no shadow (to match your latest look) */
+  border: 1px solid #000;
+  box-shadow: none;
+
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  scrollbar-width:none;
+}
+.dl-shell::-webkit-scrollbar{ width:0; height:0; display:none; }
+
+/* header */
+.dl-header{
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* safe default even with single title */
+  padding: 12px 14px;
+  background: #ffffffcc;
+  border-bottom: 1px solid #edf0f5;
+  backdrop-filter: saturate(140%) blur(6px);
+}
+.dl-title{
+  margin:0;
+  font-size:16px;
+  font-weight:700;
+  letter-spacing:.2px;
+}
+
+/* list */
+.dl-list{
+  flex:1;
+  overflow-y:auto;
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:10px;
+  padding: 12px 14px 14px;
+
+  grid-auto-rows: max-content;
+  align-content: start;
+  align-items: start;
+
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable both-edges;
+}
+.dl-list::-webkit-scrollbar{ width:0; height:0; display:none; }
+
+/* download item card */
+.dl-item{
+  width:100%;
+  border:1px solid #e6e9ef;
+  border-radius:12px;
+  background:#fff;
+  padding:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  transition:border-color .15s, box-shadow .15s, transform .04s;
+}
+.dl-item:hover{ border-color:#7da4ff; box-shadow:0 4px 12px rgba(0,0,0,.08); }
+.dl-item:active{ transform: translateY(1px); }
+
+.dl-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
+.dl-filebadge{
+  flex:0 0 36px;
+  height:36px; width:36px;
+  border-radius:10px;
+  border:1px solid #e6e9ef;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; color:#6b7280; background:#f7f8fb;
+}
+.dl-meta{ min-width:0; }
+.dl-name{
+  font-size:14px; font-weight:600; color:#21222b;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.dl-sub{
+  margin-top:4px; font-size:12px; color:#6f7585;
+  display:flex; gap:8px; align-items:center;
+}
+.dl-sub .status-error{ color:#e5484d; }
+
+.dl-right{ flex:0 0 auto; }
+.dl-openfolder{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:34px; height:34px;
+  border-radius:10px;
+  border:1px solid rgba(0,0,0,.08);
+  background:#fafafa;
+  cursor:pointer;
+  transition: background .15s, border-color .15s, transform .05s;
+}
+.dl-openfolder:hover{ background:#f1f1f1; border-color:rgba(0,0,0,.12); }
+.dl-openfolder:active{ transform: translateY(1px); }

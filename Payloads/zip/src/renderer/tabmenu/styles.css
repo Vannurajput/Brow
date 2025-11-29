@@ -1,0 +1,64 @@
+:root{
+  --bg:#ffffff;
+  --border:#cfd3da;
+  --shadow:0 10px 30px rgba(0,0,0,.18),0 2px 8px rgba(0,0,0,.08);
+  --text:#2e3137;
+  --muted:#6e7380;
+  --hover:#f4f6f9;
+}
+
+/* size-to-content & no scrollbars */
+html,body{
+  margin:0;
+  padding:0;
+  background:transparent;
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-user-select:none;
+  width:max-content;
+  height:max-content;
+  overflow:hidden;
+  outline:none;
+}
+
+/* popup card */
+.tm-card{
+  display:flex;
+  flex-direction:column;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:0;                  /* square corners */
+  box-shadow:var(--shadow);
+  padding:6px;
+  min-width:200px;
+  max-width:280px;
+  overflow:hidden;
+  outline:none;
+}
+
+/* menu items */
+.tm-item{
+  appearance:none;
+  border:0;
+  background:transparent;
+  text-align:left;
+  padding:6px 10px;
+  border-radius:6px;
+  color:var(--text);
+  font-size:13px;
+  cursor:pointer;
+  -webkit-app-region: no-drag;
+  outline:none;
+}
+.tm-item:hover{ background:var(--hover); }
+
+/* separator under "Pin tab" */
+/* --- CHANGE: hide the line completely --- */
+.tm-sep{                               /* [CHANGED] */
+  display:none !important;             /* remove the visible divider */
+  height:0;
+  margin:0;
+  background:transparent;
+}
+
+/* safety: kill any scrollbars entirely */
+::-webkit-scrollbar{ width:0 !important; height:0 !important; background:transparent; }
